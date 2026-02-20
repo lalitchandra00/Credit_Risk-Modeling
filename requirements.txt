@@ -6,3 +6,6 @@ seaborn
 pydantic
 fastapi
 uvicorn
+streamlit
+requests
+streamlit
