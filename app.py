@@ -28,60 +28,80 @@ def encode_inputs(data: dict):
     data["week"] = week_map.get(data["week"], -1)
     return data
 
-
 # -------- UI -------- #
-st.title("Bank Marketing Prediction App")
-st.write("Enter customer details below:")
+st.set_page_config(page_title="Loan Predictor", layout="wide")
+
+st.title("💳 Loan Approval Prediction Dashboard")
+st.markdown("---")
+
 
 with st.form("prediction_form"):
 
-    st.subheader("Personal Details")
-    age = st.number_input("Age", 0, 120, 30)
-    campaign = st.number_input("Campaign", 0, 100, 1)
-    pdays = st.number_input("Pdays", -1, 999, 0)
-    previous = st.number_input("Previous Contacts", 0, 100, 0)
+    # ================= PERSONAL =================
+    with st.expander("👤 Personal Information", expanded=True):
 
-    st.subheader("Personal Details")
+        col1, col2, col3, col4 = st.columns(4)
 
-    job = st.selectbox("Job", list(job_map.keys()))
-    marital_status = st.selectbox("Marital Status", list(marital_map.keys()))
-    education = st.selectbox("Education", list(education_map.keys()))
+        with col1:
+            age = st.number_input("Age", 0, 120, 30)
+        with col2:
+            campaign = st.number_input("Campaign", 0, 100, 1)
+        with col3:
+            pdays = st.number_input("Pdays", -1, 999, 0)
+        with col4:
+            previous = st.number_input("Previous Contacts", 0, 100, 0)
 
-    st.subheader("Date")
+        col5, col6, col7 = st.columns(3)
 
-    month = st.selectbox("Month", list(month_map.keys()))
-    week = st.selectbox("Day of Week", list(week_map.keys()))
-
-    # -------- DEFAULT -------- #
-    st.subheader("Default")
-    default_no = st.selectbox("Default No", [0, 1], index=0)
-    default_other = st.selectbox("Default Other", [0, 1], index=0)
-    default_yes = st.selectbox("Default Yes", [0, 1], index=0)
-
-
-    # -------- HOUSING -------- #
-    st.subheader("Housing Loan")
-    house_no = st.selectbox("House No", [0, 1], index=0)
-    house_other = st.selectbox("House Other", [0, 1], index=0)
-    house_yes = st.selectbox("House Yes", [0, 1], index=0)
+        with col5:
+            job = st.selectbox("Job", list(job_map.keys()))
+        with col6:
+            marital_status = st.selectbox("Marital Status", list(marital_map.keys()))
+        with col7:
+            education = st.selectbox("Education", list(education_map.keys()))
 
 
-    # -------- PERSONAL LOAN -------- #
-    st.subheader("Personal Loan")
-    loan_no = st.selectbox("Loan No", [0, 1], index=0)
-    loan_other = st.selectbox("Loan Other", [0, 1], index=0)
-    loan_yes = st.selectbox("Loan Yes", [0, 1], index=0)
+    # ================= DATE =================
+    with st.expander("📅 Contact Timing", expanded=False):
+
+        col8, col9 = st.columns(2)
+
+        with col8:
+            month = st.selectbox("Month", list(month_map.keys()))
+        with col9:
+            week = st.selectbox("Day of Week", list(week_map.keys()))
 
 
-    # -------- PREVIOUS OUTCOME -------- #
-    st.subheader("Previous Outcome")
-    poutcome_failure = st.selectbox("Failure", [0, 1], index=0)
-    poutcome_nonexistent = st.selectbox("Nonexistent", [0, 1], index=0)
-    poutcome_success = st.selectbox("Success", [0, 1], index=0)
+    # ================= CREDIT FLAGS =================
+    with st.expander("🏦 Credit Information", expanded=False):
 
-    submit = st.form_submit_button("Predict")
+        st.markdown("##### Default History")
+        c1, c2, c3 = st.columns(3)
+        default_no = c1.selectbox("No", [0,1])
+        default_other = c2.selectbox("Other", [0,1])
+        default_yes = c3.selectbox("Yes", [0,1])
+
+        st.markdown("##### Housing Loan")
+        h1, h2, h3 = st.columns(3)
+        house_no = h1.selectbox("No ", [0,1])
+        house_other = h2.selectbox("Other ", [0,1])
+        house_yes = h3.selectbox("Yes ", [0,1])
+
+        st.markdown("##### Personal Loan")
+        l1, l2, l3 = st.columns(3)
+        loan_no = l1.selectbox("No  ", [0,1])
+        loan_other = l2.selectbox("Other  ", [0,1])
+        loan_yes = l3.selectbox("Yes  ", [0,1])
+
+        st.markdown("##### Previous Campaign Result")
+        p1, p2, p3 = st.columns(3)
+        poutcome_failure = p1.selectbox("Failure", [0,1])
+        poutcome_nonexistent = p2.selectbox("Nonexistent", [0,1])
+        poutcome_success = p3.selectbox("Success", [0,1])
 
 
+    st.markdown("---")
+    submit = st.form_submit_button("🚀 Predict Loan Approval")
 # -------- PREDICTION -------- #
 if submit:
     try:
